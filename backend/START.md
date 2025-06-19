@@ -12,7 +12,8 @@
 1. Cloner le projet
 ```bash
 git clone <repository-url>
-cd moodlypulse-backend
+cd MoodlyPulse
+cd backend
 ```
 
 2. Configurer PostgreSQL
@@ -24,6 +25,8 @@ createdb moodlypulse
 psql -U postgres
 CREATE DATABASE moodlypulse;
 \q
+
+# Ou manuellement via PgAdmin
 ```
 
 3. Configurer les variables d'environnement
@@ -78,7 +81,7 @@ L'application se connecte automatiquement à PostgreSQL avec les paramètres dé
 - **SSL Mode**: disable
 
 
-## 🧪 Tester l'API
+## 🧪 Tester si l'API fonctionne
 
 Vous pouvez tester l'API avec curl ou Postman :
 
@@ -86,21 +89,7 @@ Vous pouvez tester l'API avec curl ou Postman :
 # Health check
 curl http://localhost:8080/health
 
-# Inscription
-curl -X POST http://localhost:8080/auth/register \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-
-# Connexion
-curl -X POST http://localhost:8080/auth/login \
-  -H "Content-Type: application/json" \
-  -d '{"email":"test@example.com","password":"password123"}'
-
-# Créer une entrée (remplacez TOKEN par le JWT reçu)
-curl -X POST http://localhost:8080/entries \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer TOKEN" \
-  -d '{"date":"2024-01-15","mood":4,"sleep_hours":7.5,"water_cups":8,"sport_min":30,"note":"Bonne journée!"}'
+# Ou via simple requête GET http://localhost:8080/health
 ```
 
 

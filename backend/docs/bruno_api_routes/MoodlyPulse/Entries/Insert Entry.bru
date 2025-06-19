@@ -1,0 +1,22 @@
+meta {
+  name: Insert Entry
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://localhost:8080/entries
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "date":"2024-01-15",
+    "mood":4,
+    "sleep_hours":7.5,
+    "water_cups":8,
+    "sport_min":30,
+    "note":"Belle journée!"
+  }
+}

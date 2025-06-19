@@ -1,0 +1,247 @@
+   <!-- Decorative Background Elements -->
+   <div class="decorative-blob decorative-blob-1"></div>
+   <div class="decorative-blob decorative-blob-2"></div>
+   <div class="decorative-blob decorative-blob-3"></div>
+   <div class="decorative-blob decorative-blob-4"></div>
+   
+   <div class="content-wrapper">
+       <!-- Header -->
+       <header class="glass-card shadow-2xl relative z-10">
+           <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+               <div class="flex flex-col sm:flex-row justify-between items-center gap-4">
+                   <div class="text-center sm:text-left">
+                       <div class="flex flex-col items-center sm:items-start gap-3">
+                           <!--<img src="/assets/images/logo.png" alt="Moodly Pulse Logo" class="h-12 w-auto">-->
+                           <h1 class="text-3xl sm:text-4xl font-bold mood-gradient-text">
+                               Moodly Pulse
+                           </h1>
+                       </div>
+                       <p class="text-gray-600 mt-1 text-sm sm:text-base">Suivez votre bien-être au quotidien</p>
+                   </div>
+                   <div class="flex items-center gap-6">
+                       <!-- User Profile Card -->
+                       <div class="glass-card rounded-3xl px-8 py-6 shadow-xl hover:shadow-2xl transition-all duration-300 border border-white/20">
+                           <div class="flex items-center gap-6">
+                               <!-- User Info with better typography -->
+                               <div class="flex flex-col">
+                                   <div class="flex items-center gap-3 mb-2">
+                                       <div class="w-3 h-3 bg-green-400 rounded-full animate-pulse"></div>
+                                       <p class="font-bold text-gray-800 text-xl leading-tight">Bonjour, Marie ! 👋</p>
+                                   </div>
+                                   <p class="text-sm text-gray-500 font-medium">Mardi 19 juin 2024</p>
+                                   <div class="flex items-center gap-4 mt-3">
+                                       <div class="flex items-center gap-2">
+                                           <span class="text-purple-500">🔥</span>
+                                           <span class="text-xs text-gray-600 font-medium">Série: 5j</span>
+                                       </div>
+                                       <div class="flex items-center gap-2">
+                                           <span class="text-blue-500">📊</span>
+                                           <span class="text-xs text-gray-600 font-medium">23 entrées</span>
+                                       </div>
+                                   </div>
+                               </div>
+                               
+                               <!-- Quick Stats -->
+                               <div class="hidden lg:flex flex-col items-center gap-1 ml-4 pl-4 border-l border-gray-200">
+                                   <div class="text-xs text-gray-500">Humeur</div>
+                                   <div class="text-lg font-bold text-yellow-500">4.2/5</div>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+                   
+                   <!-- Logout Button - Discrete top right -->
+                   <div class="flex items-center cursor-pointer">
+                       <div class="px-3 py-2 flex items-center hover:bg-white/10 rounded-lg transition-colors duration-200 group">
+                           <i class="fas fa-sign-out-alt text-sm text-red-400 group-hover:text-red-300 transition-colors duration-200"></i>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </header>
+
+       <!-- Main Dashboard -->
+       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+           <!-- Entry Form -->
+           <div class="glass-card rounded-3xl p-6 sm:p-8 mb-8 deep-shadow">
+               <div class="text-center mb-8">
+                   <h2 class="text-2xl sm:text-3xl font-bold text-gray-800 mb-2">
+                       Comment ça va aujourd'hui ?
+                   </h2>
+                   <div class="section-separator"></div>
+               </div>
+
+               <form class="space-y-8">
+                   <div class="grid lg:grid-cols-2 gap-8 lg:gap-12">
+                       <!-- Left Column -->
+                       <div class="space-y-6">
+                           <!-- Mood -->
+                           <div>
+                               <label class="block text-gray-700 font-semibold mb-4 text-lg">😊 Humeur du jour</label>
+                               <div class="grid grid-cols-5 gap-3 sm:gap-4 mb-4">
+                                   <button type="button" class="mood-button aspect-square rounded-2xl text-3xl sm:text-4xl flex items-center justify-center">😢</button>
+                                   <button type="button" class="mood-button aspect-square rounded-2xl text-3xl sm:text-4xl flex items-center justify-center">😞</button>
+                                   <button type="button" class="mood-button aspect-square rounded-2xl text-3xl sm:text-4xl flex items-center justify-center">😐</button>
+                                   <button type="button" class="mood-button selected aspect-square rounded-2xl text-3xl sm:text-4xl flex items-center justify-center">😊</button>
+                                   <button type="button" class="mood-button aspect-square rounded-2xl text-3xl sm:text-4xl flex items-center justify-center">😍</button>
+                               </div>
+                               <div class="text-center">
+                                   <div class="mood-badge">
+                                       <span>😊</span>
+                                       <span>Bonne humeur (4/5)</span>
+                                   </div>
+                               </div>
+                           </div>
+
+                           <!-- Sleep -->
+                           <div>
+                               <label class="block text-gray-700 font-semibold mb-3 text-lg">😴 Heures de sommeil</label>
+                               <input type="number" step="0.5" min="0" max="24" value="7.5" placeholder="7.5"
+                                      class="input-field w-full px-6 py-4 rounded-2xl focus:outline-none text-lg">
+                           </div>
+                       </div>
+
+                       <!-- Right Column -->
+                       <div class="space-y-6">
+                           <!-- Water -->
+                           <div>
+                               <label class="block text-gray-700 font-semibold mb-3 text-lg">💧 Verres d'eau</label>
+                               <input type="number" min="0" value="8" placeholder="8"
+                                      class="input-field w-full px-6 py-4 rounded-2xl focus:outline-none text-lg">
+                           </div>
+
+                           <!-- Sport -->
+                           <div>
+                               <label class="block text-gray-700 font-semibold mb-3 text-lg">🏃‍♀️ Sport (minutes)</label>
+                               <input type="number" min="0" value="30" placeholder="30"
+                                      class="input-field w-full px-6 py-4 rounded-2xl focus:outline-none text-lg">
+                           </div>
+
+                           <!-- Note -->
+                           <div>
+                               <label class="block text-gray-700 font-semibold mb-3 text-lg">📝 Note personnelle</label>
+                               <textarea rows="4" placeholder="Partagez vos pensées du jour..."
+                                         class="input-field w-full px-6 py-4 rounded-2xl focus:outline-none resize-none text-lg">Belle journée ensoleillée ! J'ai fait du jogging ce matin et je me sens pleine d'énergie.</textarea>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="text-center pt-6">
+                       <button type="submit" class="primary-button text-white px-12 py-4 rounded-2xl font-semibold text-lg shadow-2xl">
+                           💖 Enregistrer ma journée
+                       </button>
+                   </div>
+               </form>
+           </div>
+           <div class="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6 mb-8">
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">🔥</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">5j</div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Série actuelle</div>
+                   <div class="text-xs sm:text-sm text-gray-500 mt-1">Continuez comme ça !</div>
+               </div>
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">📅</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">23</div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Entrées ce mois</div>
+                   <div class="text-xs sm:text-sm text-gray-500 mt-1">Excellent suivi</div>
+               </div>
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">😊</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">4.2<span class="text-lg text-gray-400">/5</span></div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Humeur moyenne</div>
+               </div>
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">💤</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">7.3h</div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Sommeil moyen</div>
+               </div>
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">🏃‍♀️</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">25min</div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Sport moyen</div>
+               </div>
+               <div class="stat-card rounded-3xl p-6 text-center">
+                <div class="text-2xl mt-2">💧</div>
+                   <div class="stat-value text-4xl sm:text-5xl font-bold mb-2">6.8</div>
+                   <div class="text-gray-700 font-semibold text-sm sm:text-base">Verres d'eau/jour</div>
+               </div>
+           </div>
+
+           <!-- Recent Entries -->
+           <div class="glass-card rounded-3xl p-6 sm:p-8 deep-shadow">
+               <div class="mb-8">
+                   <h2 class="text-2xl sm:text-3xl font-bold text-gray-800">📅 Mes dernières entrées</h2>
+                   <p class="text-gray-600 mt-1">Votre parcours bien-être</p>
+               </div>
+               
+               <div class="space-y-6">
+                   <!-- Entry 1 -->
+                   <div class="entry-card rounded-3xl p-6 sm:p-8 relative">
+                       <div class="entry-mood-bg absolute top-4 right-4 text-6xl opacity-20">😊</div>
+                       <div class="flex flex-col sm:flex-row justify-between gap-4 relative z-10">
+                           <div class="flex-1">
+                               <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                                   <span class="font-bold text-gray-800 text-xl">19 juin 2024</span>
+                               </div>
+                               <div class="grid grid-cols-1 sm:grid-cols-4 text-sm text-gray-600 mb-4">
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                       <span class="text-lg">😊</span>
+                                       <span><strong>Bonne humeur</strong></span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                       <span class="text-lg">😴</span>
+                                       <span><strong>7.5h</strong> de sommeil</span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                       <span class="text-lg">💧</span>
+                                       <span><strong>8</strong> verres d'eau</span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                       <span class="text-lg">🏃‍♀️</span>
+                                       <span><strong>30min</strong> de sport</span>
+                                   </div>
+                               </div>
+                               <div class="px-3 pb-2">
+                                   <p class="text-gray-700 leading-relaxed">Belle journée ensoleillée ! J'ai fait du jogging ce matin et je me sens pleine d'énergie.</p>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                   <!-- Entry 2 -->
+                   <div class="entry-card rounded-3xl p-6 sm:p-8 relative">
+                       <div class="entry-mood-bg absolute top-4 right-4 text-6xl opacity-20">😍</div>
+                       <div class="flex flex-col sm:flex-row justify-between gap-4 relative z-10">
+                           <div class="flex-1">
+                               <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                                   <span class="font-bold text-gray-800 text-xl">18 juin 2024</span>
+                               </div>
+                               <div class="grid grid-cols-1 sm:grid-cols-4 text-sm text-gray-600 mb-4">
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                       <span class="text-lg">😍</span>
+                                       <span><strong>Excellente humeur</strong></span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                      <span class="text-lg">😴</span>
+                                       <span><strong>8h</strong> de sommeil</span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                      <span class="text-lg">💧</span>
+                                       <span><strong>10</strong> verres d'eau</span>
+                                   </div>
+                                   <div class="flex items-center gap-2 px-3 rounded-xl">
+                                      <span class="text-lg">🏃‍♀️</span>
+                                       <span><strong>45min</strong> de sport</span>
+                                   </div>
+                               </div>
+                               <div class="px-3 pb-2">
+                                   <p class="text-gray-700 leading-relaxed">Journée parfaite ! Yoga le matin et sortie avec des amis le soir. Je me sens vraiment bien dans ma peau.</p>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+           </div>
+       </div>
+   </div>
