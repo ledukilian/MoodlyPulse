@@ -17,10 +17,10 @@ func Register(c *gin.Context) {
 		return
 	}
 
-	// Check if user already exists
+	// Check if user already exists with email
 	var existingUser models.User
 	if err := config.DB.Where("email = ?", req.Email).First(&existingUser).Error; err == nil {
-		c.JSON(http.StatusConflict, gin.H{"error": "User already exists"})
+		c.JSON(http.StatusConflict, gin.H{"error": "User with this email already exists"})
 		return
 	}
 
@@ -33,6 +33,8 @@ func Register(c *gin.Context) {
 
 	// Create user
 	user := models.User{
+		Nom:      req.Nom,
+		Prenom:   req.Prenom,
 		Email:    req.Email,
 		Password: string(hashedPassword),
 	}
@@ -90,7 +92,7 @@ func Login(c *gin.Context) {
 
 func GetMe(c *gin.Context) {
 	userID := c.GetUint("user_id")
-	
+
 	var user models.User
 	if err := config.DB.First(&user, userID).Error; err != nil {
 		c.JSON(http.StatusNotFound, gin.H{"error": "User not found"})

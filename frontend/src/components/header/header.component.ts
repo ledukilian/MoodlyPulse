@@ -91,6 +91,9 @@ export class HeaderComponent {
   userDisplayName = computed(() => {
     const user = this.authService.getCurrentUser();
     if (!user) return 'Utilisateur';
+    if (user.prenom && user.nom) {
+      return `${user.prenom} ${user.nom}`;
+    }
     return user.email.split('@')[0] || 'Utilisateur';
   });
 

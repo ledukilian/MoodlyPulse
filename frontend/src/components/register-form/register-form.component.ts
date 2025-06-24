@@ -21,6 +21,34 @@ import { AuthService } from '../../services/auth.service';
       </div>
       
       <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="space-y-6">
+        <div class="grid grid-cols-2 gap-4">
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Prénom</label>
+            <input type="text" formControlName="prenom" 
+                   class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+                   placeholder="Votre prénom">
+            <div *ngIf="registerForm.get('prenom')?.invalid && registerForm.get('prenom')?.touched" 
+                 class="text-red-500 text-sm mt-1">
+              <span *ngIf="registerForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
+              <span *ngIf="registerForm.get('prenom')?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères</span>
+              <span *ngIf="registerForm.get('prenom')?.errors?.['maxlength']">Le prénom ne peut pas dépasser 50 caractères</span>
+            </div>
+          </div>
+          
+          <div>
+            <label class="block text-gray-700 font-semibold mb-2">Nom</label>
+            <input type="text" formControlName="nom" 
+                   class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+                   placeholder="Votre nom">
+            <div *ngIf="registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched" 
+                 class="text-red-500 text-sm mt-1">
+              <span *ngIf="registerForm.get('nom')?.errors?.['required']">Le nom est requis</span>
+              <span *ngIf="registerForm.get('nom')?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</span>
+              <span *ngIf="registerForm.get('nom')?.errors?.['maxlength']">Le nom ne peut pas dépasser 50 caractères</span>
+            </div>
+          </div>
+        </div>
+        
         <div>
           <label class="block text-gray-700 font-semibold mb-2">Email</label>
           <input type="email" formControlName="email" 
@@ -88,6 +116,8 @@ export class RegisterFormComponent {
   registerError = '';
   
   registerForm = this.fb.group({
+    prenom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]]
@@ -117,9 +147,9 @@ export class RegisterFormComponent {
       this.isRegistering = true;
       this.registerError = '';
       
-      const { email, password } = this.registerForm.value;
+      const { prenom, nom, email, password } = this.registerForm.value;
       
-      this.authService.register({ email: email!, password: password! }).subscribe({
+      this.authService.register({ prenom: prenom!, nom: nom!, email: email!, password: password! }).subscribe({
         next: () => {
           this.isRegistering = false;
         },
