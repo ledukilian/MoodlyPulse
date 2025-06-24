@@ -1,14 +1,15 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../services/auth.service';
 import { EntriesService } from '../../services/entries.service';
+import { EntryStats } from '../../models/entry.model';
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <header class="glass-card shadow-2xl relative z-10 w-full">
+    <header class="bg-white shadow-2xl relative z-10 w-full">
       <div class="max-w-7xl mx-auto px-2 sm:px-4 lg:px-8 py-3 sm:py-4 relative z-10">
         <!-- Main Header Row -->
         <div class="flex items-center justify-between">
@@ -27,15 +28,15 @@ import { EntriesService } from '../../services/entries.service';
           <div class="flex items-center gap-2 sm:gap-3 lg:gap-4" *ngIf="currentUser">
             <!-- User Info -->
             <div class="hidden sm:flex items-center gap-3">
-              <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+              <div class="w-2 h-2 bg-green-400 rounded-full"></div>
               <span class="text-sm font-medium text-gray-700">{{ userDisplayName() }}</span>
             </div>
 
             <!-- Logout Button -->
             <button (click)="logout()" 
-                    class="glass-card rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 flex items-center gap-1 sm:gap-2 transition-all duration-200 deep-shadow">
+                    class="rounded-lg sm:rounded-xl px-2 py-1.5 sm:px-3 sm:py-2 flex items-center gap-1 sm:gap-2 transition-all duration-200">
+              <span class="text-xs sm:text-sm text-red-400 transition-colors duration-200 hidden md:inline">Déconnexion</span>
               <i class="fas fa-sign-out-alt text-xs sm:text-sm text-red-400 transition-colors duration-200"></i>
-              <span class="text-xs sm:text-sm text-red-400 transition-colors duration-200 hidden lg:inline">Déconnexion</span>
             </button>
           </div>
         </div>
@@ -43,10 +44,19 @@ import { EntriesService } from '../../services/entries.service';
         <!-- User Stats Row - Only show when user is logged in -->
         <div *ngIf="currentUser" class="mt-3 sm:mt-4 pt-3 sm:pt-4 border-t border-gray-200/50">
           <div class="flex flex-wrap items-center justify-between gap-3 sm:gap-4">
-            <!-- Date -->
+            <!-- Date with Entry Status Badge -->
             <div class="flex items-center gap-2">
               <span class="text-gray-500">📅</span>
               <span class="text-xs sm:text-sm text-gray-600 font-medium">{{ currentDate() }}</span>
+              <!-- Entry Status Badge -->
+              <div class="flex items-center gap-1">
+                <div *ngIf="hasTodayEntry()" 
+                     class="w-3 h-3 bg-green-500 rounded-full"
+                     title="Entrée du jour complétée"></div>
+                <div *ngIf="!hasTodayEntry()" 
+                     class="w-3 h-3 bg-red-500 rounded-full animate-pulse"
+                     title="Entrée du jour manquante"></div>
+              </div>
             </div>
 
             <!-- Stats -->
@@ -60,7 +70,7 @@ import { EntriesService } from '../../services/entries.service';
               <!-- Total Entries -->
               <div class="flex items-center gap-1 sm:gap-2">
                 <span class="text-blue-500">📊</span>
-                <span class="text-xs sm:text-sm text-gray-600 font-medium">{{ totalEntries() }} entrées</span>
+                <span class="text-xs sm:text-sm text-gray-600 font-medium">{{ totalEntries() }} {{ totalEntries() === 1 ? 'entrée' : 'entrées' }}</span>
               </div>
 
               <!-- Average Mood -->
@@ -75,52 +85,69 @@ import { EntriesService } from '../../services/entries.service';
     </header>
   `
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   private authService = inject(AuthService);
   private entriesService = inject(EntriesService);
+  
+  // Signal to store current stats
+  private currentStats = signal<EntryStats | null>(null);
   
   currentUser = computed(() => {
     return this.authService.currentUser$;
   });
 
-  stats = computed(() => {
-    this.entriesService.stats$.subscribe();
-    return null; // Will be updated when stats are available
-  });
-
   userDisplayName = computed(() => {
     const user = this.authService.getCurrentUser();
-    if (!user) return 'Utilisateur';
-    if (user.prenom && user.nom) {
-      return `${user.prenom} ${user.nom}`;
+    if (!user) return 'User';
+    if (user.firstname && user.lastname) {
+      return `${user.firstname} ${user.lastname}`;
     }
-    return user.email.split('@')[0] || 'Utilisateur';
+    return user.email.split('@')[0] || 'User';
   });
 
   currentDate = computed(() => {
     const today = new Date();
-    return today.toLocaleDateString('fr-FR', { 
+    const dateString = today.toLocaleDateString('fr-FR', { 
       weekday: 'long', 
       year: 'numeric', 
       month: 'long', 
       day: 'numeric' 
     });
+    // Capitalize first letter
+    return dateString.charAt(0).toUpperCase() + dateString.slice(1);
+  });
+
+  hasTodayEntry = computed(() => {
+    return this.entriesService.getTodayEntry() !== null;
   });
 
   userStreak = computed(() => {
-    // TODO: Calculate actual streak from entries
-    return 5;
+    const stats = this.currentStats();
+    return stats?.current_streak || 0;
   });
 
   totalEntries = computed(() => {
-    // TODO: Get from stats service
-    return 23;
+    const stats = this.currentStats();
+    return stats?.total_entries || 0;
   });
 
   averageMood = computed(() => {
-    // TODO: Get from stats service
-    return '4.2';
+    const stats = this.currentStats();
+    if (stats?.average_mood) {
+      return stats.average_mood.toFixed(1);
+    }
+    return '0.0';
   });
+
+  ngOnInit() {
+    // Subscribe to stats updates
+    this.entriesService.stats$.subscribe(stats => {
+      this.currentStats.set(stats);
+    });
+    
+    // Load entries and stats when component initializes
+    this.entriesService.loadEntries().subscribe();
+  }
 
   logout(): void {
     this.authService.logout();

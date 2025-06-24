@@ -31,19 +31,20 @@ type CreateEntryRequest struct {
 }
 
 type StatsResponse struct {
-	TotalEntries    int64   `json:"total_entries"`
-	AverageMood     float64 `json:"average_mood"`
-	AverageSleep    float64 `json:"average_sleep"`
-	TotalWaterCups  int64   `json:"total_water_cups"`
-	TotalSportMin   int64   `json:"total_sport_min"`
-	WeeklyStats     Stats   `json:"weekly_stats"`
-	MonthlyStats    Stats   `json:"monthly_stats"`
+	TotalEntries   int64   `json:"total_entries"`
+	AverageMood    float64 `json:"average_mood"`
+	AverageSleep   float64 `json:"average_sleep"`
+	TotalWaterCups int64   `json:"total_water_cups"`
+	TotalSportMin  int64   `json:"total_sport_min"`
+	CurrentStreak  int     `json:"current_streak"`
+	WeeklyStats    Stats   `json:"weekly_stats"`
+	MonthlyStats   Stats   `json:"monthly_stats"`
 }
 
 type Stats struct {
-	AverageMood     float64 `json:"average_mood"`
-	AverageSleep    float64 `json:"average_sleep"`
-	TotalWaterCups  int64   `json:"total_water_cups"`
-	TotalSportMin   int64   `json:"total_sport_min"`
-	EntriesCount    int64   `json:"entries_count"`
+	AverageMood    float64 `json:"average_mood"`
+	AverageSleep   float64 `json:"average_sleep"`
+	TotalWaterCups int64   `json:"total_water_cups"`
+	TotalSportMin  int64   `json:"total_sport_min"`
+	EntriesCount   int64   `json:"entries_count"`
 }

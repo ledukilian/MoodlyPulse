@@ -8,78 +8,78 @@ import { AuthService } from '../../services/auth.service';
   standalone: true,
   imports: [CommonModule, ReactiveFormsModule],
   template: `
-    <div class="glass-card rounded-3xl p-8 max-w-md w-full mx-4 deep-shadow form-decoration">
+    <div class="glass-card rounded-3xl p-4 sm:p-8 w-full sm:max-w-md sm:mx-4 deep-shadow form-decoration">
       <div class="corner-decoration corner-decoration-top-left"></div>
       <div class="corner-decoration corner-decoration-top-right"></div>
       <div class="corner-decoration corner-decoration-bottom-left"></div>
       <div class="corner-decoration corner-decoration-bottom-right"></div>
       
-      <div class="text-center mb-8">
-        <img src="assets/logo.png" alt="Moodly Pulse Logo" class="w-24 h-24 mx-auto mb-4">
-        <h1 class="text-3xl font-bold mood-gradient-text mb-2">Moodly Pulse</h1>
-        <p class="text-gray-600">Créez votre compte pour commencer</p>
+      <div class="text-center mb-6 sm:mb-8">
+        <img src="assets/logo.png" alt="Moodly Pulse Logo" class="w-20 h-20 sm:w-24 sm:h-24 mx-auto mb-3 sm:mb-4">
+        <h1 class="text-2xl sm:text-3xl font-bold mood-gradient-text mb-2">Moodly Pulse</h1>
+        <p class="text-gray-600 text-sm sm:text-base">Créez votre compte pour commencer</p>
       </div>
       
-      <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="space-y-6">
-        <div class="grid grid-cols-2 gap-4">
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()" class="space-y-4 sm:space-y-6">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
           <div>
-            <label class="block text-gray-700 font-semibold mb-2">Prénom</label>
-            <input type="text" formControlName="prenom" 
-                   class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+            <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Prénom</label>
+            <input type="text" formControlName="firstname" 
+                   class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl focus:outline-none text-sm sm:text-base"
                    placeholder="Votre prénom">
-            <div *ngIf="registerForm.get('prenom')?.invalid && registerForm.get('prenom')?.touched" 
-                 class="text-red-500 text-sm mt-1">
-              <span *ngIf="registerForm.get('prenom')?.errors?.['required']">Le prénom est requis</span>
-              <span *ngIf="registerForm.get('prenom')?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères</span>
-              <span *ngIf="registerForm.get('prenom')?.errors?.['maxlength']">Le prénom ne peut pas dépasser 50 caractères</span>
+            <div *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched" 
+                 class="text-red-500 text-xs sm:text-sm mt-1">
+              <span *ngIf="registerForm.get('firstname')?.errors?.['required']">Le prénom est requis</span>
+              <span *ngIf="registerForm.get('firstname')?.errors?.['minlength']">Le prénom doit contenir au moins 2 caractères</span>
+              <span *ngIf="registerForm.get('firstname')?.errors?.['maxlength']">Le prénom ne peut pas dépasser 50 caractères</span>
             </div>
           </div>
           
           <div>
-            <label class="block text-gray-700 font-semibold mb-2">Nom</label>
-            <input type="text" formControlName="nom" 
-                   class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+            <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Nom</label>
+            <input type="text" formControlName="lastname" 
+                   class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl focus:outline-none text-sm sm:text-base"
                    placeholder="Votre nom">
-            <div *ngIf="registerForm.get('nom')?.invalid && registerForm.get('nom')?.touched" 
-                 class="text-red-500 text-sm mt-1">
-              <span *ngIf="registerForm.get('nom')?.errors?.['required']">Le nom est requis</span>
-              <span *ngIf="registerForm.get('nom')?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</span>
-              <span *ngIf="registerForm.get('nom')?.errors?.['maxlength']">Le nom ne peut pas dépasser 50 caractères</span>
+            <div *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched" 
+                 class="text-red-500 text-xs sm:text-sm mt-1">
+              <span *ngIf="registerForm.get('lastname')?.errors?.['required']">Le nom est requis</span>
+              <span *ngIf="registerForm.get('lastname')?.errors?.['minlength']">Le nom doit contenir au moins 2 caractères</span>
+              <span *ngIf="registerForm.get('lastname')?.errors?.['maxlength']">Le nom ne peut pas dépasser 50 caractères</span>
             </div>
           </div>
         </div>
         
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Email</label>
+          <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Email</label>
           <input type="email" formControlName="email" 
-                 class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+                 class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl focus:outline-none text-sm sm:text-base"
                  placeholder="votre@email.com">
           <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" 
-               class="text-red-500 text-sm mt-1">
+               class="text-red-500 text-xs sm:text-sm mt-1">
             <span *ngIf="registerForm.get('email')?.errors?.['required']">L'email est requis</span>
             <span *ngIf="registerForm.get('email')?.errors?.['email']">Format d'email invalide</span>
           </div>
         </div>
         
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Mot de passe</label>
+          <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Mot de passe</label>
           <input type="password" formControlName="password"
-                 class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+                 class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl focus:outline-none text-sm sm:text-base"
                  placeholder="••••••••">
           <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" 
-               class="text-red-500 text-sm mt-1">
+               class="text-red-500 text-xs sm:text-sm mt-1">
             <span *ngIf="registerForm.get('password')?.errors?.['required']">Le mot de passe est requis</span>
             <span *ngIf="registerForm.get('password')?.errors?.['minlength']">Le mot de passe doit contenir au moins 6 caractères</span>
           </div>
         </div>
         
         <div>
-          <label class="block text-gray-700 font-semibold mb-2">Confirmer le mot de passe</label>
+          <label class="block text-gray-700 font-semibold mb-2 text-sm sm:text-base">Confirmer le mot de passe</label>
           <input type="password" formControlName="confirmPassword"
-                 class="input-field w-full px-4 py-3 rounded-xl focus:outline-none"
+                 class="input-field w-full px-3 sm:px-4 py-2.5 sm:py-3 rounded-xl focus:outline-none text-sm sm:text-base"
                  placeholder="••••••••">
           <div *ngIf="registerForm.get('confirmPassword')?.invalid && registerForm.get('confirmPassword')?.touched" 
-               class="text-red-500 text-sm mt-1">
+               class="text-red-500 text-xs sm:text-sm mt-1">
             <span *ngIf="registerForm.get('confirmPassword')?.errors?.['required']">La confirmation du mot de passe est requise</span>
             <span *ngIf="registerForm.get('confirmPassword')?.errors?.['passwordMismatch']">Les mots de passe ne correspondent pas</span>
           </div>
@@ -87,18 +87,18 @@ import { AuthService } from '../../services/auth.service';
         
         <button type="submit" 
                 [disabled]="!registerForm.valid || isRegistering"
-                class="primary-button w-full text-white py-3 rounded-xl font-semibold">
+                class="primary-button w-full text-white py-2.5 sm:py-3 rounded-xl font-semibold text-sm sm:text-base mt-6">
           <span *ngIf="!isRegistering">S'inscrire</span>
           <span *ngIf="isRegistering">Inscription...</span>
         </button>
       </form>
       
-      <div *ngIf="registerError" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-sm">
+      <div *ngIf="registerError" class="mt-4 p-3 bg-red-50 border border-red-200 rounded-lg text-red-700 text-xs sm:text-sm">
         {{ registerError }}
       </div>
       
-      <div class="mt-6 text-center">
-        <p class="text-gray-600">
+      <div class="mt-4 sm:mt-6 text-center mb-4">
+        <p class="text-gray-600 text-sm sm:text-base">
           Déjà un compte ? 
           <button (click)="switchToLogin()" class="text-amber-500 font-semibold">
             Se connecter
@@ -116,8 +116,8 @@ export class RegisterFormComponent {
   registerError = '';
   
   registerForm = this.fb.group({
-    prenom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
-    nom: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    firstname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
+    lastname: ['', [Validators.required, Validators.minLength(2), Validators.maxLength(50)]],
     email: ['', [Validators.required, Validators.email]],
     password: ['', [Validators.required, Validators.minLength(6)]],
     confirmPassword: ['', [Validators.required]]
@@ -147,9 +147,9 @@ export class RegisterFormComponent {
       this.isRegistering = true;
       this.registerError = '';
       
-      const { prenom, nom, email, password } = this.registerForm.value;
+      const { firstname, lastname, email, password } = this.registerForm.value;
       
-      this.authService.register({ prenom: prenom!, nom: nom!, email: email!, password: password! }).subscribe({
+      this.authService.register({ firstname: firstname!, lastname: lastname!, email: email!, password: password! }).subscribe({
         next: () => {
           this.isRegistering = false;
         },

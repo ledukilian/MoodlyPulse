@@ -33,10 +33,10 @@ func Register(c *gin.Context) {
 
 	// Create user
 	user := models.User{
-		Nom:      req.Nom,
-		Prenom:   req.Prenom,
-		Email:    req.Email,
-		Password: string(hashedPassword),
+		Firstname: req.Firstname,
+		Lastname:  req.Lastname,
+		Email:     req.Email,
+		Password:  string(hashedPassword),
 	}
 
 	if err := config.DB.Create(&user).Error; err != nil {

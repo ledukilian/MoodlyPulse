@@ -50,7 +50,7 @@ import { LoginFormComponent } from './components/login-form/login-form.component
         <app-header></app-header>
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
           <!-- Add Entry Button -->
-          <div class="text-center mb-8">
+          <div *ngIf="!todayEntry()" class="text-center mb-8">
             <button (click)="openEntryModal()" 
                     class="primary-button text-white px-8 py-4 rounded-2xl font-semibold text-lg shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-105">
               ✨ Ajouter mon entrée du jour
@@ -77,6 +77,9 @@ export class App implements OnInit {
   isAuthenticated = false;
   authMode: 'login' | 'register' = 'login';
   isEntryModalOpen = signal(false);
+  
+  // Expose the todayEntry signal for template use
+  todayEntry = this.entriesService.todayEntry;
 
   ngOnInit(): void {
     this.authService.isAuthenticated$.subscribe(authenticated => {

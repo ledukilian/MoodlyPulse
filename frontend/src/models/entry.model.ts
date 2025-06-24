@@ -11,12 +11,22 @@ export interface DailyEntry {
   updated_at?: string;
 }
 
+export interface CreateEntryRequest {
+  date: string;
+  mood: number;
+  sleep_hours: number;
+  water_cups: number;
+  sport_min: number;
+  note?: string;
+}
+
 export interface EntryStats {
   total_entries: number;
   average_mood: number;
   average_sleep: number;
   total_water_cups: number;
   total_sport_min: number;
+  current_streak: number;
   weekly_stats: {
     average_mood: number;
     average_sleep: number;

@@ -147,32 +147,39 @@ func GetStats(c *gin.Context) {
 
 	// Get all time stats
 	var totalEntries int64
-	var totalMood, totalSleep float64
+	var avgMood, avgSleep float64
 	var totalWater, totalSport int64
 
 	config.DB.Model(&models.DailyEntry{}).Where("user_id = ?", userID).Count(&totalEntries)
 
 	if totalEntries > 0 {
+		// Use a struct to capture the results
+		var result struct {
+			AvgMood    float64 `json:"avg_mood"`
+			AvgSleep   float64 `json:"avg_sleep"`
+			TotalWater int64   `json:"total_water"`
+			TotalSport int64   `json:"total_sport"`
+		}
+
 		config.DB.Model(&models.DailyEntry{}).Where("user_id = ?", userID).
 			Select("AVG(mood) as avg_mood, AVG(sleep_hours) as avg_sleep, SUM(water_cups) as total_water, SUM(sport_min) as total_sport").
-			Scan(&struct {
-				AvgMood    float64 `json:"avg_mood"`
-				AvgSleep   float64 `json:"avg_sleep"`
-				TotalWater int64   `json:"total_water"`
-				TotalSport int64   `json:"total_sport"`
-			}{
-				AvgMood:    totalMood,
-				AvgSleep:   totalSleep,
-				TotalWater: totalWater,
-				TotalSport: totalSport,
-			})
+			Scan(&result)
+
+		avgMood = result.AvgMood
+		avgSleep = result.AvgSleep
+		totalWater = result.TotalWater
+		totalSport = result.TotalSport
 	}
 
+	// Calculate current streak
+	currentStreak := calculateCurrentStreak(userID)
+
 	stats.TotalEntries = totalEntries
-	stats.AverageMood = totalMood
-	stats.AverageSleep = totalSleep
+	stats.AverageMood = avgMood
+	stats.AverageSleep = avgSleep
 	stats.TotalWaterCups = totalWater
 	stats.TotalSportMin = totalSport
+	stats.CurrentStreak = currentStreak
 
 	// Get weekly stats (last 7 days)
 	weekAgo := time.Now().AddDate(0, 0, -7)
@@ -182,19 +189,21 @@ func GetStats(c *gin.Context) {
 	config.DB.Model(&models.DailyEntry{}).Where("user_id = ? AND date >= ?", userID, weekAgo).Count(&weeklyEntries)
 
 	if weeklyEntries > 0 {
+		var weeklyResult struct {
+			AvgMood    float64 `json:"avg_mood"`
+			AvgSleep   float64 `json:"avg_sleep"`
+			TotalWater int64   `json:"total_water"`
+			TotalSport int64   `json:"total_sport"`
+		}
+
 		config.DB.Model(&models.DailyEntry{}).Where("user_id = ? AND date >= ?", userID, weekAgo).
 			Select("AVG(mood) as avg_mood, AVG(sleep_hours) as avg_sleep, SUM(water_cups) as total_water, SUM(sport_min) as total_sport").
-			Scan(&struct {
-				AvgMood    float64 `json:"avg_mood"`
-				AvgSleep   float64 `json:"avg_sleep"`
-				TotalWater int64   `json:"total_water"`
-				TotalSport int64   `json:"total_sport"`
-			}{
-				AvgMood:    weeklyStats.AverageMood,
-				AvgSleep:   weeklyStats.AverageSleep,
-				TotalWater: weeklyStats.TotalWaterCups,
-				TotalSport: weeklyStats.TotalSportMin,
-			})
+			Scan(&weeklyResult)
+
+		weeklyStats.AverageMood = weeklyResult.AvgMood
+		weeklyStats.AverageSleep = weeklyResult.AvgSleep
+		weeklyStats.TotalWaterCups = weeklyResult.TotalWater
+		weeklyStats.TotalSportMin = weeklyResult.TotalSport
 	}
 
 	weeklyStats.EntriesCount = weeklyEntries
@@ -208,23 +217,65 @@ func GetStats(c *gin.Context) {
 	config.DB.Model(&models.DailyEntry{}).Where("user_id = ? AND date >= ?", userID, monthAgo).Count(&monthlyEntries)
 
 	if monthlyEntries > 0 {
+		var monthlyResult struct {
+			AvgMood    float64 `json:"avg_mood"`
+			AvgSleep   float64 `json:"avg_sleep"`
+			TotalWater int64   `json:"total_water"`
+			TotalSport int64   `json:"total_sport"`
+		}
+
 		config.DB.Model(&models.DailyEntry{}).Where("user_id = ? AND date >= ?", userID, monthAgo).
 			Select("AVG(mood) as avg_mood, AVG(sleep_hours) as avg_sleep, SUM(water_cups) as total_water, SUM(sport_min) as total_sport").
-			Scan(&struct {
-				AvgMood    float64 `json:"avg_mood"`
-				AvgSleep   float64 `json:"avg_sleep"`
-				TotalWater int64   `json:"total_water"`
-				TotalSport int64   `json:"total_sport"`
-			}{
-				AvgMood:    monthlyStats.AverageMood,
-				AvgSleep:   monthlyStats.AverageSleep,
-				TotalWater: monthlyStats.TotalWaterCups,
-				TotalSport: monthlyStats.TotalSportMin,
-			})
+			Scan(&monthlyResult)
+
+		monthlyStats.AverageMood = monthlyResult.AvgMood
+		monthlyStats.AverageSleep = monthlyResult.AvgSleep
+		monthlyStats.TotalWaterCups = monthlyResult.TotalWater
+		monthlyStats.TotalSportMin = monthlyResult.TotalSport
 	}
 
 	monthlyStats.EntriesCount = monthlyEntries
 	stats.MonthlyStats = monthlyStats
 
 	c.JSON(http.StatusOK, stats)
+}
+
+// calculateCurrentStreak calculates the current streak of consecutive days with entries
+func calculateCurrentStreak(userID uint) int {
+	var entries []models.DailyEntry
+
+	// Get all entries ordered by date descending
+	config.DB.Where("user_id = ?", userID).Order("date DESC").Find(&entries)
+
+	if len(entries) == 0 {
+		return 0
+	}
+
+	streak := 0
+	today := time.Now()
+
+	// Start from today and go backwards
+	for i := 0; i < 365; i++ { // Limit to 1 year to avoid infinite loop
+		checkDate := today.AddDate(0, 0, -i)
+
+		// Check if entry exists for this date
+		found := false
+		for _, entry := range entries {
+			// Compare only the date part (year, month, day)
+			if entry.Date.Year() == checkDate.Year() &&
+				entry.Date.Month() == checkDate.Month() &&
+				entry.Date.Day() == checkDate.Day() {
+				found = true
+				break
+			}
+		}
+
+		if found {
+			streak++
+		} else {
+			break
+		}
+	}
+
+	return streak
 }

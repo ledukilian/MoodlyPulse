@@ -8,8 +8,8 @@ import (
 
 type User struct {
 	ID        uint           `json:"id" gorm:"primaryKey"`
-	Nom       string         `json:"nom" gorm:"not null"`
-	Prenom    string         `json:"prenom" gorm:"not null"`
+	Firstname string         `json:"firstname" gorm:"not null"`
+	Lastname  string         `json:"lastname" gorm:"not null"`
 	Email     string         `json:"email" gorm:"uniqueIndex;not null"`
 	Password  string         `json:"-" gorm:"not null"` // Hidden in JSON
 	CreatedAt time.Time      `json:"created_at"`
@@ -18,10 +18,10 @@ type User struct {
 }
 
 type RegisterRequest struct {
-	Nom      string `json:"nom" binding:"required,min=2,max=50"`
-	Prenom   string `json:"prenom" binding:"required,min=2,max=50"`
-	Email    string `json:"email" binding:"required,email"`
-	Password string `json:"password" binding:"required,min=6"`
+	Firstname string `json:"firstname" binding:"required,min=2,max=50"`
+	Lastname  string `json:"lastname" binding:"required,min=2,max=50"`
+	Email     string `json:"email" binding:"required,email"`
+	Password  string `json:"password" binding:"required,min=6"`
 }
 
 type LoginRequest struct {

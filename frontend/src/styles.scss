@@ -478,6 +478,58 @@ body {
   .decorative-blob {
     display: none;
   }
+  
+  // Mobile-specific form improvements
+  .glass-card.form-decoration {
+    border-radius: 1.5rem;
+    padding: 1rem;
+    margin: 0;
+    width: 100%;
+    
+    // Garder les décorations de coins sur mobile
+    .corner-decoration {
+      display: block;
+    }
+  }
+  
+  // Improve input field sizing on mobile
+  .input-field {
+    font-size: 16px !important;
+    padding: 0.75rem 1rem !important;
+  }
+  
+  // Better button sizing for touch
+  .primary-button {
+    min-height: 48px;
+    font-size: 16px !important;
+  }
+  
+  // Ensure proper centering on mobile
+  .min-h-screen.flex.items-center.justify-center {
+    padding: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+// Additional mobile optimizations for very small screens
+@media (max-width: 480px) {
+  .glass-card.form-decoration {
+    padding: 0.75rem;
+    border-radius: 1rem;
+  }
+  
+  .input-field {
+    padding: 0.625rem 0.875rem !important;
+  }
+  
+  .primary-button {
+    min-height: 44px;
+  }
+  
+  .min-h-screen.flex.items-center.justify-center {
+    padding: 0.5rem;
+  }
 }
 
 // Additional decorative elements for forms

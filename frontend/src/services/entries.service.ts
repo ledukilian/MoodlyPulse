@@ -1,7 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
-import { DailyEntry, EntryStats, ApiResponse } from '../models/entry.model';
+import { DailyEntry, EntryStats, ApiResponse, CreateEntryRequest } from '../models/entry.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +19,10 @@ export class EntriesService {
   public error = signal<string | null>(null);
   public todayEntry = signal<DailyEntry | null>(null);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) {
+    // Load stats automatically when service is initialized
+    this.loadStats().subscribe();
+  }
 
   loadEntries(startDate?: string, endDate?: string): Observable<DailyEntry[]> {
     this.isLoading.set(true);
@@ -35,6 +38,8 @@ export class EntriesService {
           this.entriesSubject.next(entries);
           this.updateTodayEntry(entries);
           this.isLoading.set(false);
+          // Reload stats after entries are updated
+          this.loadStats().subscribe();
         }),
         catchError(error => this.handleError(error))
       );
@@ -47,18 +52,26 @@ export class EntriesService {
       );
   }
 
-  saveEntry(entry: DailyEntry): Observable<DailyEntry> {
+  saveEntry(entry: CreateEntryRequest): Observable<DailyEntry> {
     this.isLoading.set(true);
     this.error.set(null);
+    
+    console.log('Sending entry data:', entry); // Debug log
     
     return this.http.post<DailyEntry>(`${this.apiUrl}/entries`, entry)
       .pipe(
         tap(savedEntry => {
+          console.log('Entry saved successfully:', savedEntry); // Debug log
           this.updateEntriesAfterSave(savedEntry);
           this.todayEntry.set(savedEntry);
           this.isLoading.set(false);
+          // Reload stats after saving entry
+          this.loadStats().subscribe();
         }),
-        catchError(error => this.handleError(error))
+        catchError(error => {
+          console.error('Error saving entry:', error); // Debug log
+          return this.handleError(error);
+        })
       );
   }
 
@@ -92,7 +105,17 @@ export class EntriesService {
 
   private updateTodayEntry(entries: DailyEntry[]): void {
     const today = new Date().toISOString().split('T')[0];
-    const todayEntry = entries.find(entry => entry.date === today);
+    console.log('Looking for today entry:', today);
+    console.log('Available entries:', entries.map(e => ({ date: e.date, id: e.id })));
+    
+    const todayEntry = entries.find(entry => {
+      // Normalize the entry date to YYYY-MM-DD format
+      const entryDate = new Date(entry.date).toISOString().split('T')[0];
+      console.log('Comparing entry date:', entryDate, 'with today:', today);
+      return entryDate === today;
+    });
+    
+    console.log('Found today entry:', todayEntry);
     this.todayEntry.set(todayEntry || null);
   }
 
