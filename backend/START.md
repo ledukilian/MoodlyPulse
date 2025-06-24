@@ -1,3 +1,4 @@
+![MoodlyPulse Banner](../MoodlyPulse_ReadMe_Header.png)
 
 ### [⬅️ Retour au ReadMe principal](README.md)
 
@@ -49,6 +50,8 @@ go run main.go
 
 Le serveur démarre sur le port 8080.
 
+**Note :** Lors du premier démarrage, l'application migrera automatiquement les utilisateurs existants de l'ancien format `username` vers le nouveau format `firstname`/`lastname`.
+
 
 ## ⚙️ Configuration
 
@@ -88,6 +91,16 @@ Vous pouvez tester l'API avec curl ou Postman :
 ```bash
 # Health check
 curl http://localhost:8080/health
+
+# Test d'inscription avec les nouveaux champs firstname/lastname
+curl -X POST http://localhost:8080/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@test.com",
+    "password": "motdepasse123"
+  }'
 
 # Ou via simple requête GET http://localhost:8080/health
 ```

@@ -1,3 +1,5 @@
+![MoodlyPulse Banner](../MoodlyPulse_ReadMe_Header.png)
+
 ### [⬅️ Retour au ReadMe principal](README.md)
 
 
@@ -28,6 +30,8 @@ moodlypulse-backend/
 
 ### User
 - `id` (uint) - Clé primaire
+- `firstname` (string) - Prénom (2-50 caractères)
+- `lastname` (string) - Nom de famille (2-50 caractères)
 - `email` (string) - Email unique
 - `password` (string) - Mot de passe haché
 - `created_at` (time) - Date de création
@@ -63,7 +67,9 @@ Inscription d'un nouvel utilisateur.
 **Body:**
 ```json
 {
-  "email": "user@example.com",
+  "firstname": "John",
+  "lastname": "Doe",
+  "email": "john.doe@example.com",
   "password": "motdepasse123"
 }
 ```
@@ -74,19 +80,21 @@ Inscription d'un nouvel utilisateur.
   "token": "jwt-token-here",
   "user": {
     "id": 1,
-    "email": "user@example.com",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
     "created_at": "2024-01-01T00:00:00Z"
   }
 }
 ```
 
 #### POST /auth/login
-Connexion utilisateur.
+Connexion utilisateur (se fait toujours via l'email).
 
 **Body:**
 ```json
 {
-  "email": "user@example.com",
+  "email": "john.doe@example.com",
   "password": "motdepasse123"
 }
 ```
@@ -97,7 +105,9 @@ Connexion utilisateur.
   "token": "jwt-token-here",
   "user": {
     "id": 1,
-    "email": "user@example.com",
+    "firstname": "John",
+    "lastname": "Doe",
+    "email": "john.doe@example.com",
     "created_at": "2024-01-01T00:00:00Z"
   }
 }
@@ -169,5 +179,12 @@ Récupère les statistiques de l'utilisateur.
   }
 }
 ```
+
+## 🔄 Migration de données
+
+L'application gère automatiquement la migration des utilisateurs existants :
+- Les utilisateurs avec l'ancien champ `username` sont automatiquement migrés
+- Le `username` devient le `firstname` et le `lastname` est défini à "User"
+- Les nouveaux utilisateurs doivent fournir `firstname` et `lastname` lors de l'inscription
 
 ### [⬅️ Retour au ReadMe principal](README.md)

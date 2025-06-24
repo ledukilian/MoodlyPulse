@@ -1,4 +1,8 @@
-# 💖 MoodlyPulse Backend API
+![MoodlyPulse Banner](../MoodlyPulse_ReadMe_Header.png)
+
+# 💖 Backend
+
+[⬅️ Retourner au ReadMe principal](../README.md)
 
 Backend API pour l'application MoodlyPulse - Suivi quotidien de santé et bien-être. Une collection de routes pour Bruno est accessible dans le répertoire `/docs/bruno_api_routes`
 
