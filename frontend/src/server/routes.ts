@@ -38,7 +38,7 @@ export const registerRoutes = (app: Hono<AppEnv>) => {
       data = await upstreamResponse.text();
     }
 
-    c.status(upstreamResponse.ok ? 200 : 502);
+    c.status(upstreamResponse.status);
     return c.json({
       proxied: true,
       upstreamStatus: upstreamResponse.status,
