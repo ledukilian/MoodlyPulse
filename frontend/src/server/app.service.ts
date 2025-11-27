@@ -32,6 +32,19 @@ export class AppService {
 
       return response.data;
     } catch (error) {
+      if (axios.isAxiosError(error) && error.response) {
+        const upstreamStatus = error.response.status;
+        const upstreamMessage =
+          typeof error.response.data === 'string'
+            ? error.response.data
+            : (error.response.data as { message?: string })?.message ??
+              'Upstream request failed';
+
+        throw new HttpException(upstreamMessage, upstreamStatus, {
+          cause: error instanceof Error ? error : undefined,
+        });
+      }
+
       throw new HttpException(
         'Upstream backend is unavailable',
         HttpStatus.BAD_GATEWAY,
