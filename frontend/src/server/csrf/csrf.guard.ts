@@ -15,7 +15,9 @@ export class CsrfGuard implements CanActivate {
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest<Request>();
     const cookieToken = request.cookies?.['XSRF-TOKEN'];
-    const headerValue = request.headers['x-csrf-token'];
+    // Angular HttpClient sends X-XSRF-TOKEN by default; keep legacy header as fallback.
+    const headerValue =
+      request.headers['x-xsrf-token'] ?? request.headers['x-csrf-token'];
     const headerToken =
       (Array.isArray(headerValue) ? headerValue[0] : headerValue) ??
       (typeof request.body === 'object' ? request.body?.csrfToken : undefined);
