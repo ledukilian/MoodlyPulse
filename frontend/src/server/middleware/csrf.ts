@@ -21,7 +21,19 @@ export function verifyCsrfToken(request: FastifyRequest): void {
 
   const providedToken = headerToken ?? bodyToken;
 
-  if (!cookieToken || !providedToken || cookieToken !== providedToken) {
+  if (!cookieToken || !providedToken) {
+    const error = new Error('Invalid CSRF token');
+    (error as any).statusCode = 403;
+    throw error;
+  }
+
+  const cookieBuffer = Buffer.from(cookieToken);
+  const providedBuffer = Buffer.from(providedToken);
+
+  if (
+    cookieBuffer.length !== providedBuffer.length ||
+    !crypto.timingSafeEqual(cookieBuffer, providedBuffer)
+  ) {
     const error = new Error('Invalid CSRF token');
     (error as any).statusCode = 403;
     throw error;
