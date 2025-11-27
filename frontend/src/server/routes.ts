@@ -42,7 +42,7 @@ export function registerRoutes(app: FastifyInstance, config: ServerConfig): void
     }
 
     const contentType = backendResponse.headers.get('content-type') ?? 'application/json';
-    reply.header('content-type', contentType);
+    reply.type(contentType);
 
     try {
       return JSON.parse(rawBody);
