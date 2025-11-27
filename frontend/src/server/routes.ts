@@ -32,7 +32,7 @@ export function createRouter(): Router {
         console.error(
           `[BFF][proxy] Upstream error ${backendResponse.status}: ${bodyBuffer.toString()}`
         );
-        res.status(502).json({
+        res.status(backendResponse.status).json({
           error: "Upstream service error",
           status: backendResponse.status
         });
