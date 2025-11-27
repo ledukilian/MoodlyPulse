@@ -61,7 +61,6 @@ export function registerRoutes(app: FastifyInstance, config: ServerConfig): void
     });
 
     return {
-      csrfToken,
       cookie: csrfCookieName,
       header: csrfHeaderName
     };
