@@ -19,7 +19,7 @@ export function errorHandler(
   reply.status(statusCode).send({
     statusCode,
     error: statusCode >= 500 ? 'Internal Server Error' : error.message,
-    message: error.message,
+    message: statusCode >= 500 ? 'An unexpected error occurred' : error.message,
     path: request.url,
     timestamp: new Date().toISOString()
   });
