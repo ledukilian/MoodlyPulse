@@ -51,13 +51,16 @@ export function registerRoutes(app: FastifyInstance, config: ServerConfig): void
     }
   });
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
   app.get('/csrf/token', async (_request, reply) => {
     const csrfToken = generateCsrfToken(config.csrfSecret);
 
     reply.setCookie(csrfCookieName, csrfToken, {
       path: '/',
       httpOnly: true,
-      sameSite: 'lax'
+      sameSite: 'lax',
+      secure: isProduction
     });
 
     return {
